@@ -46,11 +46,14 @@ jobs:
       run:  dotnet publish -c Release -o ./pub -p:PublishSingleFile=true --self-contained true
 
     - name: Zip
-      run:  zip -r Release.zip ./zip/
+      run:  zip -r Release.zip ./pub/
     #- name: Pack
     #  run: dotnet pack --output nupkgs --no-build
 
     - uses: actions/upload-artifact@v2
       with:
         name: my-artifact
-        path: ./ConsolePipeline/zip/
+        path: ./ConsolePipeline/Release.zip
+
+    - name: upload artifact  
+      uses: actions/upload-release-asset@v1

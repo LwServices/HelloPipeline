@@ -42,10 +42,14 @@ jobs:
     - name: Release Build
       run: dotnet build --no-restore --configuration Release -p:Deterministic=true -p:ContinuousIntegrationBuild=true
 
-    - name: Pack
-      run: dotnet pack --output nupkgs --no-build
+    - name: Publish
+      run:  dotnet publish -c Release -o ./pub -p:PublishSingleFile=true --self-contained true
+
+    - name: Zip
+      run:  zip -r Release.zip ./pub/
+    #- name: Pack
+    #  run: dotnet pack --output nupkgs --no-build
 
     - uses: actions/upload-artifact@v2
       with:
-        name: nupkgs
-        path: nupkgs/
+        path: ./pub/

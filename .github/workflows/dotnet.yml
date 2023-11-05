@@ -67,7 +67,6 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
-        permissions: write-all
 
     - name: upload artifact  
       uses: actions/upload-release-asset@v1      
@@ -78,4 +77,3 @@ jobs:
         asset_path: ./ConsolePipeline/
         asset_name: Release.zip 
         asset_content_type: application/zip
-        permissions: write-all

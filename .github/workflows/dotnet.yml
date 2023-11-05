@@ -33,6 +33,10 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
+    - name: version
+      id: generate_version
+      run: echo "::set-output name=version::1.35.$(($GITHUB_RUN_NUMBER))"
+
     - name: Restore dependencies
       run: dotnet restore
   
@@ -43,7 +47,7 @@ jobs:
       run: dotnet build --no-restore --configuration Release -p:Deterministic=true -p:ContinuousIntegrationBuild=true
 
     - name: Publish
-      run:  dotnet publish -c Release -o ./pub -p:PublishSingleFile=true --self-contained true
+      run:  dotnet publish -c Release -p:Version=${{ steps.generate_version.outputs.version }} -p:FileVersion=${{ steps.generate_version.outputs.version }} -o ./pub -p:PublishSingleFile=true --self-contained true
 
     #- name: Pack
     #  run: dotnet pack --output nupkgs --no-build
@@ -63,8 +67,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.run_number }}
-        release_name: Release${{ github.run_number }}
+        tag_name: v${{ steps.generate_version.outputs.version }} ## ${{ github.run_number }}
+        release_name: Release$v${{ steps.generate_version.outputs.version }}
         draft: false
         prerelease: false
 
@@ -74,6 +78,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./ConsolePipeline/
+        asset_path: ./ConsolePipeline/Release.zip
         asset_name: Release.zip 
         asset_content_type: application/zip

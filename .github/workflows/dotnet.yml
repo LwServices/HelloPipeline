@@ -49,7 +49,7 @@ jobs:
 
     - name: Publish
       #run:  dotnet publish -c Release -p:Version=${{ steps.generate_version.outputs.version }} -p:FileVersion=${{ steps.generate_version.outputs.version }} -o ./pub -p:PublishSingleFile=true --self-contained true
-      run:  dotnet publish -c Release -p:Version=${{ ${{ env.BuildVersion }} }} -p:FileVersion=${{ ${{ env.BuildVersion }} }} -o ./pub -p:PublishSingleFile=true --self-contained true
+      run:  dotnet publish -c Release -p:Version=${{ ${{ env.BuildVersion }} }} -p:FileVersion=${{ env.BuildVersion }} -o ./pub -p:PublishSingleFile=true --self-contained true
 
     #- name: Pack
     #  run: dotnet pack --output nupkgs --no-build
